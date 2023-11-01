@@ -46,6 +46,8 @@ from .quota import localhost_quota_manager
 from .repository import BlobRepository, MetadataRepository, Repository
 from .task import Link, Task
 
+from .visualize import run_viz
+
 fuse: Optional[Callable[[Pipeline, str, bool], Awaitable[None]]]
 try:
     from .fuse import main as fuse
@@ -183,6 +185,9 @@ def main(
     parser_http_agent.add_argument("--host", help="The host to listen on", default="0.0.0.0")
     parser_http_agent.add_argument("--port", help="The port to listen on", default=6132, type=int)
     parser_http_agent.add_argument("--secret", help="The token to use for authentication", required=True)
+
+    parser_viz = subparsers.add_parser("viz", help="Show Visualization of Running Pipeline")
+    parser_viz.set_defaults(func=run_viz)
 
     if fuse is not None:
         parser_fuse = subparsers.add_parser("fuse", help="Mount a fuse filesystem to explore the pipeline's repos")
